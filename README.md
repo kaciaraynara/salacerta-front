@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SalaCerta - Front-end Web (Next.js)
 
-## Getting Started
+Interface do usuário desenvolvida em React com Next.js e TypeScript para disponibilizar o painel de monitoramento de ocupação e o formulário de agendamento de salas de reunião.
 
-First, run the development server:
+A aplicação interage de forma transparente com os dois microsserviços do ecossistema (Autenticação em C# e Reservas em Python).
 
-```bash
+## Decisões Técnicas e Arquitetura
+
+* **Next.js (App Router) & TypeScript:** Utilizado para garantir componentização limpa, rotas organizadas e segurança em tempo de desenvolvimento por meio da imposição de tipagem estática nos contratos de dados consumidos das APIs.
+* **Axios Interceptors:** A comunicação HTTP foi centralizada em uma instância customizada do Axios configurada com um interceptor. Ele captura o token salvo no navegador e injeta automaticamente o cabeçalho `Authorization: Bearer <token>` em todas as chamadas feitas para o backend Python, evitando duplicação de lógica nos componentes de tela.
+* **Dropdowns Dependentes em Memória:** Para evitar requisições desnecessárias de rede a cada clique, a relação entre locais e salas é controlada no lado do cliente por meio de hooks nativos (`useEffect` e `useCallback`). Assim que o usuário muda a filial selecionada no formulário, o catálogo de salas disponíveis é filtrado imediatamente na interface.
+
+## Como Configurar e Rodar Localmente
+
+### Pré-requisitos
+* Node.js (versão 18 ou superior) instalado
+
+### Passo a Passo
+
+1. Abra o terminal na pasta raiz deste projeto e instale as dependências declaradas no manifesto:
+
+npm install
+
+Certifique-se de que as rotas base configuradas no arquivo de serviços apontam corretamente para os endereços locais de execução das APIs:
+
+Back-end C# (Autenticação): http://localhost:5000
+
+Back-end Python (Reservas): http://localhost:8000
+
+Inicialize o servidor em modo de desenvolvimento local:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A aplicação estará disponível e rodando no navegador através do endereço http://localhost:3000.
